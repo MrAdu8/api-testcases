@@ -8,7 +8,7 @@ router.get('/hi', (req, res)=> {
 });
 
 router.get('/', (req, res)=> {
-    const getalluser = "SELECT * FROM `users`";
+    const getalluser = "SELECT * FROM `user`";
 
     connection.query(getalluser, function(err, result) {
         if (err) {
