@@ -1,15 +1,14 @@
 const express = require('express');
 const app = express();
-
 const PORT = process.env.PORT || 3001;
 
-const products_routes = require('./routes/products');
+const products_routes = require('./routes/users');
+
+app.use('/users', products_routes);
 
 app.get("/", (req, res) =>{
     res.send("This is basic express api");
 });
-
-app.use('/users/data', products_routes);
 
 const start = async () =>{
     try {
