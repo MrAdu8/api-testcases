@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const con = require('./database');
+
 const products_routes = require('./routes/users');
 
 app.use('/users', products_routes);
