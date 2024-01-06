@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const conn = require('../database');
 const connection = require('../database');
 
 
