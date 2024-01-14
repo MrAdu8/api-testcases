@@ -30,7 +30,7 @@ router.get('/', async(req, res)=> {
             res.status(400).json({error: 'User connection is not done'});
         }else{
             console.log(result)
-            res.status(200).json({ msg: 'Done' });
+            res.status(200).json(result);
         }
     } catch (err) {
         console.log(err);

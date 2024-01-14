@@ -8,9 +8,11 @@ const con = require('./database');
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: true}))
 
-const products_routes = require('./routes/users');
+const user_routes = require('./routes/users');
+const hobby_routes = require('./routes/hobbies');
 
-app.use('/users', products_routes); 
+app.use('/users', user_routes); 
+app.use('/hobbies', hobby_routes);
 
 app.get("/", (req, res) =>{
     res.send("This is basic express api");
