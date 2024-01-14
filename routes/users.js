@@ -20,24 +20,28 @@ const connection = require('../database');
 /* CRUD operation */
 
 // get all users
-router.get('/', (req, res)=> {
-    const getalluser = "SELECT * FROM `user`";
+router.get('/', async(req, res)=> {
+    try {
+        const SQL = "SELECT * FROM user";
 
-    connection.query(getalluser, function(err, result) {
-        if (err) {
-            console.log(err);
-            res.send("Unable to get Users Data");
-        } else {
-            res.send(result);
+        const result = await connection.query(SQL);
+
+        if(result.affectedRows === 0){
+            res.status(400).json({error: 'User connection is not done'});
+        }else{
+            console.log(result)
+            res.status(200).json({ msg: 'Done' });
         }
-    });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({error:'failed to get all User'});
+    }
 });
 
-// 
+// add new user
 router.post('/', async(req, res)=>{
     try{
         const {firstName, lastName} = req.body;
-        console.log(req.body)
 
         if (!firstName || !lastName) {
             throw new Error("name is mandatory");
@@ -51,8 +55,8 @@ router.post('/', async(req, res)=>{
         if(result.affectedRows === 0){
             res.status(400).json({error: 'User id already has been used'});
         }else{
-            console.log(result)
-            res.status(200).json({value: firstName})
+            console.log(result);
+            res.status(200).json({value: firstName});
         }
 
     }catch(err){
@@ -70,13 +74,13 @@ router.put('/:user_id', async(req, res)=>{
         const {name} = req.body;
         const SQL = 'UPDATE user SET name=? WHERE user_id=?';
 
-        const result = await queryPromise(SQL, [name, user_id]);
+        const result = await connection.query(SQL, [name, user_id]);
 
         if(result.affectedRows === 0){
             console.log(result);
             res.status(400).json({error: 'User is Not present'});
         }else{
-            res.status(200).json({value: name})
+            res.status(200).json({value: name});
         }
 
     }catch(err){
@@ -90,7 +94,7 @@ router.delete('/:user_id([0-9]{1})', async (req, res) => {
     try {
         const user_id = req.params.user_id;
         const SQL = "DELETE FROM user WHERE user_id=?";
-        const result = await queryPromise(SQL, [user_id]);
+        const result = await connection.query(SQL, [user_id]);
 
         if (result.affectedRows === 0) {
             res.status(404).json({ error: 'Unable to Find user' });
